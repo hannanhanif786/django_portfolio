@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ post.title }} - Portfolio Blog{% endblock %}
+
+{% block content %}
+<!-- Blog Post Header -->
+<div class="section" style="padding-top: 120px; padding-bottom: 60px; background-color: var(--secondary-bg);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <a href="{% url 'blog' %}" class="blog-back mb-4 d-inline-block fade-in">
+                    <i class="fas fa-arrow-left me-2"></i> Back to Blog
+                </a>
+
+                <div class="fade-in">
+                    <h1 class="blog-post-title">{{ post.title }}</h1>
+                    <div class="blog-post-meta">
+                        <span><i class="far fa-calendar-alt me-2"></i>{{ post.created_date|date:"F d, Y" }}</span>
+                        <span class="ms-4"><i class="far fa-clock me-2"></i>5 min read</span>
+                    </div>
+                </div>
+
+                {% if post.image_url %}
+                <div class="mt-4 fade-in fade-in-1">
+                    <img src="{{ post.image_url }}" alt="{{ post.title }}" class="img-fluid rounded" style="max-height: 400px; width: auto; display: block; margin: 0 auto;">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blog Post Content -->
+<div class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="blog-post fade-in fade-in-2">
+                    <div class="blog-post-content">
+                        {{ post.content|safe }}
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="blog-tags mt-5 fade-in fade-in-3">
+                    <h4 class="mb-3">Tags</h4>
+                    <div>
+                        <a href="#" class="tech-tab me-2 mb-2 d-inline-block">Web Development</a>
+                        <a href="#" class="tech-tab me-2 mb-2 d-inline-block">Flask</a>
+                        <a href="#" class="tech-tab me-2 mb-2 d-inline-block">Python</a>
+                        <a href="#" class="tech-tab me-2 mb-2 d-inline-block">Tutorial</a>
+                    </div>
+                </div>
+
+                <!-- Share -->
+                <div class="blog-share mt-5 fade-in fade-in-3">
+                    <h4 class="mb-3">Share This Post</h4>
+                    <div class="social-links">
+                        <a href="javascript:void(0);" onclick="sharePost('twitter')" class="social-link me-3"><i class="fab fa-twitter social-icon"></i></a>
+                        <a href="javascript:void(0);" onclick="sharePost('facebook')" class="social-link me-3"><i class="fab fa-facebook-f social-icon"></i></a>
+                        <a href="javascript:void(0);" onclick="sharePost('linkedin')" class="social-link me-3"><i class="fab fa-linkedin-in social-icon"></i></a>
+                    </div>
+                </div>
+
+                <!-- Author Info -->
+                <div class="blog-author mt-5 p-4 fade-in fade-in-3" style="background-color: var(--card-bg); border-radius: 10px;">
+                    <div class="d-flex align-items-center">
+                        <div style="width: 80px; height: 80px; border-radius: 50%; background-color: var(--accent-color); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-right: 20px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 0.5rem;">Alex Johnson</h4>
+                            <p style="color: var(--secondary-text); margin-bottom: 0.5rem;">Web Developer & Designer</p>
+                            <div class="social-links">
+                                <a href="#" class="me-2" style="color: var(--accent-color);"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="me-2" style="color: var(--accent-color);"><i class="fab fa-github"></i></a>
+                                <a href="#" class="me-2" style="color: var(--accent-color);"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related Posts -->
+<div class="section" style="background-color: var(--secondary-bg);">
+    <div class="container">
+        <h2 class="section-title fade-in">Related Posts</h2>
+
+        <div class="blog-grid fade-in fade-in-1">
+            {% for p in blog_posts %}
+                {% if p.id != post.id %}
+                    <div class="blog-card">
+                        {% if p.image_url %}
+                            <img src="{{ p.image_url }}" class="blog-img" alt="{{ p.title }}">
+                        {% endif %}
+                        <div class="blog-content">
+                            <h3 class="blog-title">{{ p.title }}</h3>
+                            <p class="blog-date">{{ p.created_date|date:"b d, Y" }}</p>
+                            <p class="blog-excerpt">{{ p.summary }}</p>
+                            <a href="{% url 'blog_post' post_id=p.id %}" class="read-more">Read More <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/blog.js' %}"></script>
+{% endblock %}

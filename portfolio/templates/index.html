@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Portfolio - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title fade-in">Hi, I'm <span style="color: var(--accent-color);">Hannan Hanif</span></h1>
+            <p class="hero-subtitle fade-in fade-in-1">A passionate web developer specializing in creating beautiful and functional websites.</p>
+            <a href="#contact-section" class="hero-cta fade-in fade-in-2">Get In Touch</a>
+        </div>
+    </div>
+</section>
+
+<!-- Experience Section -->
+<section id="experience-section" class="section">
+    <div class="container">
+        <h2 class="section-title">Experience</h2>
+
+        <div class="experiences-container fade-in">
+            {% for experience in experiences %}
+                <div class="experience-card">
+                    <div class="experience-header">
+                        <div>
+                            <h3 class="experience-title">{{ experience.title }}</h3>
+                            <h4 class="experience-company">{{ experience.company }}</h4>
+                        </div>
+                        <div class="experience-date">
+                            {{ experience.start_date|date:"M Y" }} -
+                            {% if experience.end_date %}
+                                {{ experience.end_date|date:"M Y" }}
+                            {% else %}
+                                Present
+                            {% endif %}
+                        </div>
+                    </div>
+                    <p class="experience-description">{{ experience.description }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Seminars Section -->
+<section id="seminars-section" class="section" style="background-color: var(--secondary-bg);">
+    <div class="container">
+        <h2 class="section-title">Seminars & Conferences</h2>
+
+        <div class="seminars-grid fade-in">
+            {% for seminar in seminars %}
+                <div class="seminar-card">
+                    <h3 class="seminar-title">{{ seminar.title }}</h3>
+                    <div class="seminar-details">
+                        <span class="seminar-date">{{ seminar.date|date:"M d, Y" }}</span>
+                        <span class="seminar-location">{{ seminar.location }}</span>
+                    </div>
+                    <p class="seminar-description">{{ seminar.description }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Tech Stack Section -->
+<section id="tech-section" class="section">
+    <div class="container">
+        <h2 class="section-title">Technical Skills</h2>
+
+        <div class="tech-tabs fade-in">
+            <button class="tech-tab" data-category="all">All</button>
+            {% for category in tech_categories %}
+                <button class="tech-tab" data-category="{{ category }}">{{ category }}</button>
+            {% endfor %}
+        </div>
+
+        <div class="tech-grid fade-in fade-in-1">
+            {% for tech in tech_stacks %}
+                <div class="tech-card" data-category="{{ tech.category }}">
+                    <div class="tech-icon">
+                        {% if tech.name == 'Python' %}
+                            <i class="fab fa-python"></i>
+                        {% elif tech.name == 'JavaScript' %}
+                            <i class="fab fa-js"></i>
+                        {% elif tech.name == 'React' %}
+                            <i class="fab fa-react"></i>
+                        {% elif tech.name == 'HTML/CSS' %}
+                            <i class="fab fa-html5"></i>
+                        {% elif tech.name == 'SQL' %}
+                            <i class="fas fa-database"></i>
+                        {% elif tech.name == 'Git' %}
+                            <i class="fab fa-git-alt"></i>
+                        {% elif tech.name == 'Docker' %}
+                            <i class="fab fa-docker"></i>
+                        {% elif tech.name == 'AWS' %}
+                            <i class="fab fa-aws"></i>
+                        {% elif tech.name == 'Flask' %}
+                            <i class="fab fa-python"></i>
+                        {% else %}
+                            <i class="fas fa-code"></i>
+                        {% endif %}
+                    </div>
+                    <h3 class="tech-name">{{ tech.name }}</h3>
+                    <p class="tech-category">{{ tech.category }}</p>
+                    <div class="progress-bar">
+    <div class="progress" data-progress="{{ tech.proficiency|floatformat:1 }}" style="width: {{ tech.proficiency|floatformat:1|floatformat:0|add:"0"|floatformat:"0"|floatformat }}0%;"></div>
+</div>
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact-section" class="section" style="background-color: var(--secondary-bg);">
+    <div class="container">
+        <h2 class="section-title">Get In Touch</h2>
+
+        <div class="contact-container fade-in">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <p class="contact-text">Rahim Yar Khan, Pakistan</p>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <p class="contact-text">muhammadhannanhanif1122@gmail.com</p>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <p class="contact-text">+92 300 6745745</p>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter social-icon"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in social-icon"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github social-icon"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form action="{% url 'contact' %}" method="post" id="contact-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea id="message" name="message" class="form-textarea" rows="5" required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Preview Section -->
+<section id="blog-preview" class="section">
+    <div class="container">
+        <h2 class="section-title">Latest Articles</h2>
+
+        <div class="blog-grid fade-in">
+            {% for post in blog_posts|slice:":3" %}
+                <div class="blog-card">
+                    <div class="blog-content">
+                        <h3 class="blog-title">{{ post.title }}</h3>
+                        <p class="blog-date">{{ post.created_date|date:"M d, Y" }}</p>
+                        <p class="blog-excerpt">{{ post.summary }}</p>
+                        <a href="{% url 'blog_post' post.id %}" class="read-more">Read More <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'blog' %}" class="hero-cta">View All Posts</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/contact.js' %}"></script>
+{% endblock %}

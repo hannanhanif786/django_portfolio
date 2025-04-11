@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}500 - Server Error{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <h1 class="error-code">500</h1>
+    <h2 class="error-message">Server Error</h2>
+    <p class="error-description">
+        Something went wrong on our end. We're working on fixing the issue. Please try again later.
+    </p>
+    <a href="{% url '' %}" class="back-home">Back to Home</a>
+</div>
+{% endblock %}
